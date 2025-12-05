@@ -1,0 +1,217 @@
+/* ================================
+   GLOBAL PAGE STYLE
+================================ */
+.game1-container {
+    display: grid;
+    text-align: center;
+    padding: 20px;
+    background: #f6fff7;
+    min-height: 100vh;
+    color: #1a5d31;
+    font-family: "Kanit", sans-serif;
+    max-width: 600px;
+    margin: 0 auto 20px;
+    min-width: 300px;
+}
+
+h1 {
+    margin-bottom: 15px;
+    font-size: 32px;
+    color: #157a3f;
+    font-weight: 600;
+}
+
+/* ================================
+   REWARD STATUS BOX
+================================ */
+.reward-box {
+    background: #e5ffeb;
+    padding: 15px 25px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    display: inline-block;
+    box-shadow: 0 0 12px rgba(120, 255, 160, 0.35);
+}
+
+.reward-box p {
+    margin: 6px 0;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+/* ================================
+   VALIDATION INPUT SECTION
+================================ */
+.validate-box {
+    margin-top: 25px;
+    padding: 25px 30px;
+    background: #ffffff;
+    display: inline-block;
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(0, 128, 64, 0.12);
+    text-align: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.validate-box h2 {
+    margin-bottom: 18px;
+    color: #117a45;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+/* Modern input */
+.employee-input {
+    width: 250px;
+    padding: 14px 16px;
+    border: 2px solid #21a055;
+    border-radius: 10px;
+    font-size: 18px;
+    font-family: "Kanit", sans-serif;
+    outline: none;
+    transition: 0.25s ease;
+    box-shadow: 0 0 0 rgba(0, 255, 128, 0);
+}
+
+.employee-input:focus {
+    border-color: #14c767;
+    box-shadow: 0 0 10px rgba(20, 199, 103, 0.45);
+}
+
+/* Validate Button */
+.validate-btn {
+    display: block;
+    margin: 18px auto 0;
+    padding: 12px 24px;
+    font-size: 18px;
+    font-family: "Kanit", sans-serif;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #16a34a, #22c55e);
+    color: white;
+    cursor: pointer;
+    border: none;
+    transition: 0.25s ease;
+}
+
+.validate-btn:hover {
+    background: linear-gradient(90deg, #0f7f3b, #1fa553);
+    transform: translateY(-2px);
+}
+
+/* Fade animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ================================
+   PLAYER INFORMATION
+================================ */
+.player-info {
+    margin-top: 20px;
+    background: white;
+    padding: 20px;
+    display: inline-block;
+    border-radius: 12px;
+    box-shadow: 0 4px 18px rgba(0, 128, 64, 0.1);
+}
+
+.player-info p {
+    margin: 6px 0;
+    font-size: 18px;
+}
+
+.already-played {
+    color: red;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* ================================
+   GLOBAL BUTTON STYLE
+================================ */
+button {
+    padding: 10px 18px;
+    border: none;
+    background: #21a055;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: "Kanit", sans-serif;
+    transition: 0.25s ease;
+}
+
+button:hover {
+    background: #157a3f;
+}
+
+/* Spin button (ใช้ในโค้ดเดิม) */
+.spin-btn {
+    margin-top: 20px;
+    font-size: 20px;
+    background: #33cc66;
+}
+
+/* ================================
+   MODAL RESULT POPUP
+================================ */
+.modal-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99;
+}
+
+.modal-box {
+    background: white;
+    padding: 30px 40px;
+    border-radius: 14px;
+    text-align: center;
+    animation: pop 0.35s ease;
+    width: 300px;
+    box-shadow: 0 6px 20px rgba(0, 128, 64, 0.25);
+}
+
+@keyframes pop {
+    from {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.modal-box h2 {
+    color: #0f7f3b;
+    margin-bottom: 10px;
+}
+
+/* ================================
+   BACK BUTTON
+================================ */
+.back-btn {
+    margin-top: 40px;
+    height: 40px;
+    width: 200px;
+    background: #ff884d;
+}
+
+.back-btn:hover {
+    background: #d96d3b;
+}

@@ -1,0 +1,13 @@
+:root {
+    --green: #1dbf73;
+    --green-dark: #14975b;
+    --bg: #ffffff;
+    --text: #222;
+}
+
+body {
+    margin: 0;
+    font-family: "Kanit", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
