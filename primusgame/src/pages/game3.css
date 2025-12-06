@@ -1,0 +1,123 @@
+.game3-container {
+    /* padding: 20px; */
+    background: #f6fff7;
+    min-height: 100vh;
+    color: #135c2f;
+    font-family: "Kanit", sans-serif;
+    text-align: center;
+}
+
+/* Toolbar */
+.toolbar {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.toolbar h2 {
+    flex: 1;
+    text-align: center;
+    margin-right: 50px;
+    font-size: 24px;
+    color: #0c4d23;
+}
+.game-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: white;
+    text-align: center;
+    flex: 1;
+}
+
+.back-btn {
+    background: #1a7f42;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.back-btn:hover {
+    background: #135c2f;
+}
+
+/* RANDOM UI */
+.random-section {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin: 30px 0;
+}
+
+.set-box {
+    background: #dffff0;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 8px #c3ffe1;
+}
+
+.number-display {
+    font-size: 40px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Play button */
+.play-btn {
+    padding: 12px 24px;
+    font-size: 18px;
+    border: none;
+    background: #21a055;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+}
+.play-btn:hover {
+    background: #157a3f;
+}
+
+/* Winner Cards */
+.winner-card {
+    padding: 10px;
+    background: white;
+    margin: 10px auto;
+    max-width: 300px;
+    border-radius: 8px;
+    box-shadow: 0 0 8px #c3ffd8;
+}
+
+/* Modal */
+.modal-bg {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.modal-card {
+    background:white;
+    padding:30px;
+    border-radius:12px;
+    text-align:center;
+    min-width:300px;
+    animation: pop 0.3s ease;
+}
+
+.close-btn {
+    margin-top:20px;
+    padding:8px 16px;
+    background:#ff7b4d;
+    color:white;
+    border:none;
+    border-radius:6px;
+}
+.close-btn:hover {
+    background:#d66037;
+}
+
+@keyframes pop {
+    from { transform:scale(0.5); opacity:0; }
+    to { transform:scale(1); opacity:1; }
+}

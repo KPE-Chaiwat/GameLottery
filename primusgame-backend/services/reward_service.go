@@ -9,6 +9,7 @@ import (
 	"primusgame-backend/models"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -60,4 +61,27 @@ func UpdateGame1RewardService(rewardType int) error {
 	}
 
 	return nil
+}
+
+func GetRewardData() (*models.RewardDocument, error) {
+
+	log.Println("🔍 [GetRewardData] Loading Reward Document...")
+
+	collection := config.DB("primusgame").Collection("Reward")
+
+	// Reward Document มีอันเดียว และ ID fix ไว้
+	rewardID, _ := primitive.ObjectIDFromHex("693283f45d9650012f58447d")
+
+	filter := bson.M{"_id": rewardID}
+
+	var reward models.RewardDocument
+
+	err := collection.FindOne(context.Background(), filter).Decode(&reward)
+	if err != nil {
+		log.Println("❌ [GetRewardData] ERROR:", err)
+		return nil, errors.New("reward document not found")
+	}
+
+	log.Println("✅ [GetRewardData] Reward Document Loaded Successfully")
+	return &reward, nil
 }

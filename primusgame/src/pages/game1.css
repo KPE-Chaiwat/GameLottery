@@ -4,14 +4,22 @@
 .game1-container {
     display: grid;
     text-align: center;
-    padding: 20px;
+    /* justify-content: center; */
+    align-items: center;
+    /* padding: 20px; */
     background: #f6fff7;
-    min-height: 100vh;
+    /* min-height: 100vh; */
     color: #1a5d31;
     font-family: "Kanit", sans-serif;
-    max-width: 600px;
+    /* max-width: 600px; */
     margin: 0 auto 20px;
     min-width: 300px;
+}
+
+.wrap-player{
+    display: flex;
+    justify-content: center;
+    align-content: center;
 }
 
 h1 {
@@ -44,6 +52,7 @@ h1 {
 ================================ */
 .validate-box {
     margin-top: 25px;
+    max-width: 300px;
     padding: 25px 30px;
     background: #ffffff;
     display: inline-block;
