@@ -3,6 +3,8 @@ package main
 import (
 	"log"
 
+	"github.com/gofiber/fiber/v2/middleware/logger"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 
@@ -21,15 +23,18 @@ func main() {
 
 	// CONNECT MONGO
 	config.ConnectMongo("mongodb://localhost:27017")
-
+	// config logs
+	app.Use(logger.New())
 	// API GROUP
 	api := app.Group("/api")
 
 	// Import Game 1 Routes
 	routes.Game1Routes(api.Group("/game1"))
-
+	// import Game 2 Routes
+	routes.Game2Routes(api.Group("/game2"))
 	//log
 	log.Println(app.Stack())
+
 	// Start server
 	log.Println("🚀 Server running on :8080")
 	app.Listen(":8080")

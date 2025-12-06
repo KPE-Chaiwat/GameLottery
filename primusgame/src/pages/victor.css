@@ -1,0 +1,407 @@
+/* =========================
+   Victor Result Page - Page Specific Styles
+   Requires: theme.css (common styles)
+========================= */
+
+/* =========================
+   Page Container
+========================= */
+.victor-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--green-50) 0%, var(--white) 50%, var(--green-50) 100%);
+    position: relative;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Background Decorations */
+.victor-bg-pattern {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        radial-gradient(circle at 25% 25%, var(--green-100) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, var(--green-100) 0%, transparent 50%);
+    opacity: 0.6;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.victor-bg-glow {
+    position: fixed;
+    top: -200px;
+    right: -200px;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, var(--green-200) 0%, transparent 70%);
+    opacity: 0.4;
+    pointer-events: none;
+    z-index: 0;
+    animation: victorFloat 20s ease-in-out infinite;
+}
+
+@keyframes victorFloat {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-50px, 50px) scale(1.1); }
+}
+
+/* =========================
+   Main Content
+========================= */
+.victor-main {
+    flex: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 24px;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+/* =========================
+   Empty State
+========================= */
+.victor-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    text-align: center;
+    animation: fadeInUp 0.5s ease;
+}
+
+.victor-empty-icon {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, var(--green-100) 0%, var(--green-50) 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    color: var(--green-500);
+    box-shadow: var(--shadow-md);
+}
+
+.victor-empty-state h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--green-800);
+    margin-bottom: 8px;
+}
+
+.victor-empty-state p {
+    font-size: 16px;
+    color: var(--gray-500);
+}
+
+/* =========================
+   Result Section
+========================= */
+.victor-result-section {
+    animation: fadeInUp 0.5s ease;
+}
+
+/* User Card */
+.victor-user-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 24px 32px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: var(--shadow-lg);
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+    border: 1px solid var(--green-100);
+}
+
+.victor-user-avatar {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, var(--green-400) 0%, var(--green-500) 100%);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    flex-shrink: 0;
+}
+
+.victor-user-details {
+    flex: 1;
+    min-width: 200px;
+}
+
+.victor-user-details h2 {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--gray-700);
+    margin-bottom: 4px;
+}
+
+.victor-total-reward {
+    text-align: right;
+    padding: 16px 24px;
+    background: linear-gradient(135deg, var(--green-50) 0%, var(--green-100) 100%);
+    border-radius: 16px;
+    border: 1px solid var(--green-200);
+}
+
+.victor-total-reward .label {
+    display: block;
+    font-size: 12px;
+    color: var(--green-600);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.victor-total-reward .amount {
+    display: block;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--green-700);
+}
+
+/* Section Header */
+.victor-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.victor-section-header h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--green-800);
+}
+
+.victor-section-header h3 svg {
+    color: var(--gold);
+}
+
+.victor-game-count {
+    font-size: 13px;
+    color: var(--gray-500);
+    background: var(--gray-100);
+    padding: 6px 14px;
+    border-radius: 20px;
+}
+
+/* =========================
+   Game Cards
+========================= */
+.victor-game-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.victor-game-card {
+    background: var(--white);
+    border-radius: 18px;
+    padding: 0;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--green-100);
+    overflow: hidden;
+    position: relative;
+    transition: all 0.3s ease;
+    animation: cardFadeIn 0.5s ease backwards;
+}
+
+.victor-game-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl), var(--shadow-green);
+}
+
+/* Card Header */
+.victor-card-header {
+    padding: 20px 20px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border-bottom: 1px solid var(--green-50);
+    background: linear-gradient(135deg, var(--green-50) 0%, var(--white) 100%);
+}
+
+.victor-game-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, var(--green-500) 0%, var(--emerald-500) 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+}
+
+.victor-card-header h4 {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--gray-700);
+}
+
+/* Card Body */
+.victor-card-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.victor-status-row,
+.victor-reward-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.victor-status-label,
+.victor-reward-label {
+    font-size: 14px;
+    color: var(--gray-500);
+}
+
+.victor-status-value {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 20px;
+}
+
+.victor-status-value.played {
+    background: var(--green-100);
+    color: var(--green-700);
+}
+
+.victor-status-value.not-played {
+    background: var(--gray-100);
+    color: var(--gray-500);
+}
+
+.victor-reward-value {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+}
+
+.victor-reward-amount {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--gold);
+}
+
+.victor-reward-currency {
+    font-size: 14px;
+    color: var(--gray-500);
+    font-weight: 500;
+}
+
+.victor-reward-none {
+    font-size: 14px;
+    color: var(--gray-400);
+    font-style: italic;
+}
+
+/* Card Shine Effect */
+.victor-game-card.has-reward .victor-card-shine {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent
+    );
+    pointer-events: none;
+}
+
+.victor-game-card.has-reward:hover .victor-card-shine {
+    animation: victorShine 0.6s ease;
+}
+
+@keyframes victorShine {
+    to { left: 150%; }
+}
+
+/* No Reward Card */
+.victor-game-card.no-reward {
+    opacity: 0.8;
+}
+
+.victor-game-card.no-reward .victor-game-icon {
+    background: linear-gradient(135deg, var(--gray-300) 0%, var(--gray-400) 100%);
+}
+
+/* =========================
+   Responsive - Page Specific
+========================= */
+@media (max-width: 768px) {
+    .victor-main {
+        padding: 20px 16px;
+    }
+
+    .victor-user-card {
+        padding: 20px;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .victor-user-details {
+        min-width: auto;
+    }
+
+    .victor-total-reward {
+        text-align: center;
+        width: 100%;
+    }
+
+    .victor-section-header {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+    }
+
+    .victor-game-cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .victor-user-avatar {
+        width: 56px;
+        height: 56px;
+    }
+
+    .victor-user-details h2 {
+        font-size: 18px;
+    }
+
+    .victor-total-reward .amount {
+        font-size: 24px;
+    }
+
+    .victor-card-header h4 {
+        font-size: 15px;
+    }
+
+    .victor-reward-amount {
+        font-size: 20px;
+    }
+}

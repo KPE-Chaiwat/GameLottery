@@ -10,7 +10,6 @@ import (
 
 func UpdateGame1(c *fiber.Ctx) error {
 	var req models.UpdateGame1Request
-	log.Println("TOng: Received UpdateGame1 request")
 
 	// Log raw body for debugging
 	log.Printf("Raw Body: %s", string(c.Body()))
