@@ -35,6 +35,9 @@ func main() {
 
 	//impoet  Game 3 Route
 	routes.Game3Routes(api.Group("/game3"))
+
+	//impoet  Game 4 Route
+	routes.Game4Routes(api.Group("/game4"))
 	//log
 	log.Println(app.Stack())
 
