@@ -31,6 +31,7 @@ func PlayGame4Round(c *fiber.Ctx) error {
 	log.Println("📌 [Game4] Round from client =", body.Round)
 	log.Println("📌 [Game4] Date from client  =", body.Date)
 
+	// โหลดข้อมูล Game4 ก่อน
 	game4, _ := services.GetGame4Data()
 
 	// ---- SAFE CHECK ----
@@ -42,13 +43,15 @@ func PlayGame4Round(c *fiber.Ctx) error {
 		})
 	}
 
-	acc := game4.Game4.Rounds[body.Round-1].Accumulate
-
-	// ค้นหาผู้ชนะ
+	// ค้นหาผู้ชนะตามวันเกิด
 	winners, _ := services.FindBirthdayWinners(body.Date)
 
-	// update game4
-	services.UpdateGame4Round(body.Round, body.Date, winners, acc)
+	// Update Game4 (ไม่ต้องส่ง accumulate แล้ว)
+	err := services.UpdateGame4Round(body.Round, body.Date, winners)
+	if err != nil {
+		log.Println("❌ [Game4] UpdateGame4Round error:", err)
+		return c.JSON(fiber.Map{"success": false, "msg": "update error"})
+	}
 
 	log.Println("✅ [Game4] Round processed successfully")
 
@@ -60,19 +63,17 @@ func PlayGame4Round(c *fiber.Ctx) error {
 
 func Game4Final(c *fiber.Ctx) error {
 
-	data, _ := services.GetGame4Data()
+	// ไม่ต้องรวมสะสมย้อนหลัง!
+	// FINAL PRIZE FIXED = 10000 บาท
+	totalReward := 10000
 
-	// รวมเงินสะสมทั้งหมด
-	total := 0
-	for _, r := range data.Game4.Rounds {
-		total += r.Accumulate
-	}
-	total += 2000
-
-	winner, err := services.Game4FinalWinner(total)
+	winner, err := services.Game4FinalWinner(totalReward)
 	if err != nil {
 		return c.JSON(fiber.Map{"success": false})
 	}
 
-	return c.JSON(fiber.Map{"success": true, "winner": winner})
+	return c.JSON(fiber.Map{
+		"success": true,
+		"winner":  winner,
+	})
 }

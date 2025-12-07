@@ -1,3 +1,6 @@
+/* ===========================
+   พื้นหลังหลักของหน้า
+=========================== */
 .game4-container {
     min-height: 100vh;
     background: var(--green-50);
@@ -9,23 +12,57 @@
     padding: 24px;
 }
 
-/* Accumulate */
-.accumulate-box {
-    text-align: center;
-    padding: 20px;
-    background: white;
+/* ===========================
+   การ์ดรางวัลของแต่ละรอบ
+=========================== */
+.round-reward-cards {
+    margin-top: 20px;
+}
+
+.reward-card {
+    background: #ffffff;
+    padding: 18px 22px;
     border-radius: 14px;
-    box-shadow: var(--shadow-md);
-    margin-bottom: 25px;
+    margin-bottom: 20px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+    border-left: 6px solid #1bb34a;
+    animation: fadeIn 0.3s ease;
 }
 
-.acc-value {
-    font-size: 32px;
-    font-weight: 700;
-    color: var(--green-700);
+.reward-card h4 {
+    margin-bottom: 10px;
+    color: #149944;
+    font-size: 20px;
 }
 
-/* Round Grid */
+.reward-card p {
+    margin: 4px 0;
+    font-size: 15px;
+}
+
+/* รายชื่อผู้ชนะ */
+.winner-item {
+    padding: 6px 10px;
+    background: #f0fff0;
+    border-radius: 6px;
+    margin-top: 6px;
+    border: 1px solid #c6f7d4;
+    font-size: 14px;
+}
+
+.date-tag {
+    margin-top: 10px;
+    font-size: 14px;
+    opacity: 0.75;
+}
+
+/* ===========================
+   Grid ปุ่มสุ่มรอบ 1–5
+=========================== */
+.round-section {
+    margin-top: 30px;
+}
+
 .round-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -40,7 +77,11 @@
     border: none;
     cursor: pointer;
     font-size: 15px;
-    transition: 0.2s;
+    transition: 0.2s ease;
+}
+
+.round-btn:hover {
+    background: var(--green-600);
 }
 
 .round-btn.disabled {
@@ -48,19 +89,49 @@
     cursor: not-allowed;
 }
 
-/* Final Section */
+.round-btn.disabled:hover {
+    background: var(--gray-300);
+}
+
+/* ===========================
+   ปุ่มสุ่มผู้โชคดี (Final)
+=========================== */
+.final-section {
+    margin-top: 40px;
+}
+
 .final-btn {
     width: 100%;
     padding: 18px;
-    background: var(--gold);
+    background: #ff9800;
+    color: white;
     border-radius: 12px;
     border: none;
     font-size: 18px;
-    font-weight: bold;
     cursor: pointer;
+    font-weight: bold;
+    transition: 0.25s;
 }
 
-/* Modal */
+.final-btn:hover {
+    background: #e68900;
+}
+
+/* ปุ่ม Disabled */
+.final-btn:disabled {
+    background: #bfbfbf !important;
+    color: #666 !important;
+    cursor: not-allowed !important;
+    opacity: 0.65;
+}
+
+.final-btn:disabled:hover {
+    background: #bfbfbf !important;
+}
+
+/* ===========================
+   Modal
+=========================== */
 .modal-bg {
     position: fixed;
     inset: 0;
@@ -83,15 +154,26 @@
     to { transform: scale(1); opacity: 1; }
 }
 
+/* ===========================
+   Loading Spinner
+=========================== */
 .loading-spinner {
-    width: 50px;
-    height: 50px;
-    border: 6px solid #fff;
+    width: 55px;
+    height: 55px;
+    border: 6px solid rgba(255,255,255,0.7);
     border-top-color: var(--green-600);
     border-radius: 50%;
-    animation: spin 0.8s infinite linear;
+    animation: spin 0.7s infinite linear;
 }
 
 @keyframes spin {
     to { transform: rotate(360deg); }
+}
+
+/* ===========================
+   Animation
+=========================== */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
 }

@@ -1,5 +1,6 @@
 package models
 
+// import "go.mongodb.org/mongo-driver/bson/primitive"
 //---------Game 1 struct
 
 type DetailGame1 struct {
@@ -24,3 +25,12 @@ type Player struct {
 	Brithday   string      `json:"birthday" bson:"Brithday"`
 	Game1      DetailGame1 `json:"game1" bson:"Game1"`
 }
+
+// type Player struct {
+//     ID         primitive.ObjectID `json:"id" bson:"_id"`
+//     No         int                `json:"no" bson:"No"`
+//     EmployeeID string             `json:"employee_id" bson:"EmployeeID"`
+//     FnameLname string             `json:"fname_lname" bson:"Fname_Lname"`
+//     Brithday   string             `json:"birthday" bson:"Brithday"`
+//     Game1      DetailGame1        `json:"game1" bson:"Game1"`
+// }

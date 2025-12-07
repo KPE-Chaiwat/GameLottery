@@ -2,11 +2,13 @@ package services
 
 import (
 	"context"
-	"errors"
+	// "errors"
 	"log"
 	"math/rand"
 	"primusgame-backend/config"
 	"primusgame-backend/models"
+
+	"fmt"
 	"strconv"
 	"time"
 
@@ -53,55 +55,61 @@ func FindBirthdayWinners(date string) ([]models.Player, error) {
 	return players, err
 }
 
-// อัปเดตผู้ชนะ Game4
-func UpdateGame4Round(round int, date string, winners []models.Player, accumulate int) error {
+func UpdateGame4Round(round int, date string, winners []models.Player) error {
+	ctx := context.Background()
 
 	rewardID, _ := primitive.ObjectIDFromHex("693283f45d9650012f58447d")
 	rewardCol := config.DB("primusgame").Collection("Reward")
 	playerCol := config.DB("primusgame").Collection("players")
 
-	index := strconv.Itoa(round - 1) // 👈 ใช้ ITOA เท่านั้น
+	index := round - 1
 
-	// ========================================================
-	// CASE 1: ไม่มีผู้ชนะ → เพิ่มเงินสะสม (accumulate + 2000)
-	// ========================================================
+	// -----------------------------
+	//  เงินสะสม = 2000 × รอบ
+	// -----------------------------
+	accumulate := 2000 * round
+
+	// -----------------------------
+	//  ถ้าไม่มีผู้ชนะ
+	// -----------------------------
 	if len(winners) == 0 {
-
-		_, err := rewardCol.UpdateByID(
-			context.Background(),
-			rewardID,
+		_, err := rewardCol.UpdateByID(ctx, rewardID,
 			bson.M{
 				"$set": bson.M{
-					"game4.rounds." + index + ".date":       date,
-					"game4.rounds." + index + ".accumulate": accumulate + 2000,
-					"game4.rounds." + index + ".winners":    []interface{}{},
+					"game4.rounds." + strconv.Itoa(index) + ".date":       date,
+					"game4.rounds." + strconv.Itoa(index) + ".accumulate": accumulate,
+					"game4.rounds." + strconv.Itoa(index) + ".winners":    []interface{}{},
 				},
 			},
 		)
-
 		return err
 	}
 
-	// ========================================================
-	// CASE 2: มีผู้ชนะ → แจกเงินรางวัล
-	// ========================================================
+	// -----------------------------
+	//  มีผู้ชนะ → เงินรางวัลต่อคน
+	// -----------------------------
+	rewardPerPerson := accumulate / len(winners)
 
-	total := accumulate + 2000
-	rewardPerPerson := total / len(winners)
-
-	// ล้าง winners เดิม
-	_, _ = rewardCol.UpdateByID(
-		context.Background(),
-		rewardID,
+	// เคลียร์ winners เดิมก่อน
+	_, _ = rewardCol.UpdateByID(ctx, rewardID,
 		bson.M{"$set": bson.M{
-			"game4.rounds." + index + ".winners": []interface{}{},
+			"game4.rounds." + strconv.Itoa(index) + ".winners": []interface{}{},
 		}},
 	)
 
-	// INSERT ผู้ชนะลง Reward
+	// -----------------------------
+	//  บันทึกผู้ชนะลง Reward และ Players
+	// -----------------------------
 	for _, p := range winners {
 
-		entry := bson.M{
+		// ⭐ แปลง string ID → ObjectID ก่อน update
+		objID, err := primitive.ObjectIDFromHex(p.ID)
+		if err != nil {
+			fmt.Println("❌ Invalid ObjectID:", p.ID)
+			continue
+		}
+
+		winnerEntry := bson.M{
 			"EmployeeID": p.EmployeeID,
 			"Name":       p.FnameLname,
 			"Reward":     rewardPerPerson,
@@ -109,99 +117,79 @@ func UpdateGame4Round(round int, date string, winners []models.Player, accumulat
 			"Time":       primitive.NewDateTimeFromTime(time.Now()),
 		}
 
+		// บันทึกลง Reward
 		_, _ = rewardCol.UpdateByID(
-			context.Background(),
+			ctx,
 			rewardID,
-			bson.M{
-				"$push": bson.M{
-					"game4.rounds." + index + ".winners": entry,
-				},
-			},
+			bson.M{"$push": bson.M{
+				"game4.rounds." + strconv.Itoa(index) + ".winners": winnerEntry,
+			}},
 		)
 
-		// UPDATE player document
-		playerObjID, err := primitive.ObjectIDFromHex(p.ID)
-		if err != nil {
-			log.Println("❌ Invalid player ID:", p.ID)
-			continue
-		}
-
-		_, err = playerCol.UpdateByID(
-			context.Background(),
-			playerObjID,
-			bson.M{
-				"$set": bson.M{
-					"Game4": bson.M{
-						"Played": true,
-						"Match":  true,
-						"Reward": rewardPerPerson,
-						"Date":   date,
-						"Round":  round,
-					},
+		// ⭐ Update ลง players
+		_, _ = playerCol.UpdateByID(
+			ctx,
+			objID,
+			bson.M{"$set": bson.M{
+				"Game4": bson.M{
+					"Played": true,
+					"Reward": rewardPerPerson,
+					"Date":   date,
 				},
-			},
+			}},
 		)
-		if err != nil {
-			log.Println("❌ Update player failed:", err)
-		} else {
-			log.Println("✅ Player updated:", p.EmployeeID)
-		}
-
 	}
 
-	// Reset accumulate
-	_, _ = rewardCol.UpdateByID(
-		context.Background(),
-		rewardID,
-		bson.M{
-			"$set": bson.M{
-				"game4.rounds." + index + ".accumulate": 0,
-				"game4.rounds." + index + ".date":       date,
-			},
-		},
+	// update accumulate
+	_, _ = rewardCol.UpdateByID(ctx, rewardID,
+		bson.M{"$set": bson.M{
+			"game4.rounds." + strconv.Itoa(index) + ".accumulate": accumulate,
+			"game4.rounds." + strconv.Itoa(index) + ".date":       date,
+		}},
 	)
 
 	return nil
 }
 
-// Final Winner (สุ่มพนักงานกรณีไม่มีใครเลย 5 รอบ)
-func Game4FinalWinner(acc int) (*models.Player, error) {
-
-	col := config.DB("primusgame").Collection("players")
-
-	// random employee 1 คน
-	cursor, err := col.Find(context.Background(), bson.M{})
-	if err != nil {
-		return nil, err
-	}
-
-	var players []models.Player
-	cursor.All(context.Background(), &players)
-
-	if len(players) == 0 {
-		return nil, errors.New("no employees found")
-	}
-
-	r := rand.New(rand.NewSource(time.Now().UnixNano()))
-	winner := players[r.Intn(len(players))]
-
-	// update reward
-	rewardID, _ := primitive.ObjectIDFromHex("693283f45d9650012f58447d")
-	rewardCol := config.DB("primusgame").Collection("Reward")
+func Game4FinalWinner(reward int) (*models.Player, error) {
+	ctx := context.Background()
 	playerCol := config.DB("primusgame").Collection("players")
+	rewardCol := config.DB("primusgame").Collection("Reward")
 
-	entry := models.Game4Winner{
-		EmployeeID: winner.EmployeeID,
-		Name:       winner.FnameLname,
-		Reward:     acc,
-		Time:       primitive.NewDateTimeFromTime(time.Now()),
+	// สุ่มผู้เล่นทั้งหมด
+	cursor, _ := playerCol.Find(ctx, bson.M{})
+	var players []models.Player
+	cursor.All(ctx, &players)
+
+	rand.Seed(time.Now().UnixNano())
+	winner := players[rand.Intn(len(players))]
+
+	// อัปเดต Reward Collection
+	rewardID, _ := primitive.ObjectIDFromHex("693283f45d9650012f58447d")
+	entry := bson.M{
+		"EmployeeID": winner.EmployeeID,
+		"Name":       winner.FnameLname,
+		"Reward":     reward,
+		"Date":       "FINAL",
+		"Time":       primitive.NewDateTimeFromTime(time.Now()),
 	}
 
-	_, _ = rewardCol.UpdateByID(context.Background(), rewardID,
-		bson.M{"$set": bson.M{"game4.finalWinner": entry}})
+	_, _ = rewardCol.UpdateByID(ctx, rewardID,
+		bson.M{"$set": bson.M{"game4.finalWinner": entry}},
+	)
 
-	_, _ = playerCol.UpdateByID(context.Background(), winner.ID,
-		bson.M{"$set": bson.M{"Game4Final": entry.Reward}})
+	// อัปเดต Players
+	objID, _ := primitive.ObjectIDFromHex(winner.ID)
+
+	_, _ = playerCol.UpdateByID(ctx, objID,
+		bson.M{"$set": bson.M{
+			"Game4": bson.M{
+				"Played": true,
+				"Reward": reward,
+				"Date":   "FINAL",
+			},
+		}},
+	)
 
 	return &winner, nil
 }
