@@ -1,9 +1,10 @@
 import MenuButton from "../components/common/4MenuButton";
-
+import { useNavigate } from "react-router-dom";
 export default function Home() {
+      const navigate = useNavigate();
     return (
         <div style={styles.container}>
-            <h1 style={styles.title}>🎮 Primus Game Center</h1>
+            <h1 style={styles.title}   onClick={() => navigate("/ResetPage")}>🎮 Primus Game Center</h1>
 
             <MenuButton label="Game 1" to="/game1" />
             <MenuButton label="Game 2" to="/game2" />

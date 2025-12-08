@@ -33,11 +33,16 @@ func main() {
 	// import Game 2 Routes
 	routes.Game2Routes(api.Group("/game2"))
 
-	//impoet  Game 3 Route
+	//import  Game 3 Route
 	routes.Game3Routes(api.Group("/game3"))
 
-	//impoet  Game 4 Route
+	//import  Game 4 Route
 	routes.Game4Routes(api.Group("/game4"))
+
+	routes.GameResultRoutes(api.Group("/conclude"))
+
+	//reset
+	routes.GameReset(api.Group("/reset"))
 	//log
 	log.Println(app.Stack())
 

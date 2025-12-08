@@ -4,11 +4,23 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-// GAME 1
+// ข้อมูลผู้ชนะรายคน
+type Game1WinnerEntry struct {
+	EmployeeID string             `json:"EmployeeID" bson:"EmployeeID"`
+	Name       string             `json:"Name" bson:"Name"`
+	Reward     int                `json:"Reward" bson:"Reward"`
+	Time       primitive.DateTime `json:"Time" bson:"Time"`
+}
+
+// โครงสร้าง Game1 ใน Reward Collection
 type Game1Reward struct {
 	Reward1 int `json:"Reward1" bson:"Reward1"`
 	Reward2 int `json:"Reward2" bson:"Reward2"`
 	Reward3 int `json:"Reward3" bson:"Reward3"`
+
+	Winner100 []Game1WinnerEntry `json:"winner100" bson:"winner100"`
+	Winner300 []Game1WinnerEntry `json:"winner300" bson:"winner300"`
+	Winner500 []Game1WinnerEntry `json:"winner500" bson:"winner500"`
 }
 
 // GAME 2 Winner

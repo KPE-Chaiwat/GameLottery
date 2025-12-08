@@ -22,7 +22,7 @@ type Player struct {
 	No         int         `json:"no" bson:"No"`
 	EmployeeID string      `json:"employee_id" bson:"EmployeeID"`
 	FnameLname string      `json:"fname_lname" bson:"Fname_Lname"`
-	Brithday   string      `json:"birthday" bson:"Brithday"`
+	Birthday   string      `json:"birthday" bson:"Birthday"`
 	Game1      DetailGame1 `json:"game1" bson:"Game1"`
 }
 
@@ -31,6 +31,6 @@ type Player struct {
 //     No         int                `json:"no" bson:"No"`
 //     EmployeeID string             `json:"employee_id" bson:"EmployeeID"`
 //     FnameLname string             `json:"fname_lname" bson:"Fname_Lname"`
-//     Brithday   string             `json:"birthday" bson:"Brithday"`
+//     Birthday   string             `json:"birthday" bson:"Birthday"`
 //     Game1      DetailGame1        `json:"game1" bson:"Game1"`
 // }

@@ -11,7 +11,6 @@ import (
 func UpdateGame1(c *fiber.Ctx) error {
 	var req models.UpdateGame1Request
 
-	// Log raw body for debugging
 	log.Printf("Raw Body: %s", string(c.Body()))
 
 	if err := c.BodyParser(&req); err != nil {
@@ -21,6 +20,7 @@ func UpdateGame1(c *fiber.Ctx) error {
 			"msg":    "invalid request body",
 		})
 	}
+
 	log.Printf("Parsed Request: %+v", req)
 
 	if req.EmployeeID == "" {
@@ -30,30 +30,43 @@ func UpdateGame1(c *fiber.Ctx) error {
 		})
 	}
 
-	// เรียก service
-	err := services.UpdateGame1ByEmployeeID(req)
+	// -----------------------------------
+	// 1) ดึงข้อมูล Player จาก EmployeeID
+	// -----------------------------------
+	player, err := services.GetPlayerByEmployeeID(req.EmployeeID)
 	if err != nil {
-		if err.Error() == "player not found" {
-			return c.Status(404).JSON(fiber.Map{
-				"status": "error",
-				"msg":    "player not found",
-			})
-		}
+		return c.Status(404).JSON(fiber.Map{
+			"status": "error",
+			"msg":    "player not found",
+		})
+	}
 
-		if err.Error() == "this player has played" {
-			return c.Status(400).JSON(fiber.Map{
-				"status": "error",
-				"msg":    "this player has played",
-			})
-		}
+	// -----------------------------------
+	// 2) เช็คว่าเคยเล่นแล้วหรือยัง
+	// -----------------------------------
+	// Safe check: ถ้าเคยเล่นแล้ว → ห้ามเล่นซ้ำ
+	if player.Game1.Played != nil && *player.Game1.Played {
+		return c.Status(400).JSON(fiber.Map{
+			"status": "error",
+			"msg":    "this player has played",
+		})
+	}
 
-		// อื่น ๆ จาก DB
+	// -----------------------------------
+	// 3) Update ทั้ง Player และ Reward
+	// -----------------------------------
+	err = services.UpdatePlayerAndReward(player, req.Reward)
+	if err != nil {
+		log.Println("UpdatePlayerAndReward ERROR:", err)
 		return c.Status(500).JSON(fiber.Map{
 			"status": "error",
 			"msg":    err.Error(),
 		})
 	}
 
+	// -----------------------------------
+	// 4) Success
+	// -----------------------------------
 	return c.JSON(fiber.Map{
 		"status": "success",
 		"msg":    "game1 updated",

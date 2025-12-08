@@ -43,7 +43,7 @@ func GetGame4Data() (*models.RewardDocument, error) {
 func FindBirthdayWinners(date string) ([]models.Player, error) {
 	col := config.DB("primusgame").Collection("players")
 
-	filter := bson.M{"Brithday": date}
+	filter := bson.M{"Birthday": date}
 
 	cursor, err := col.Find(context.Background(), filter)
 	if err != nil {

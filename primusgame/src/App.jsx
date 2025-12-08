@@ -5,6 +5,7 @@ import Game2 from "./pages/game2.jsx";
 import Game3 from "./pages/game3.jsx";
 import Game4 from "./pages/game4.jsx";
 import VictorResult from "./pages/VictorResult .jsx";
+import ResetPage from "./pages/ResetGame.jsx";
 
 export default function App() {
   return (
@@ -16,6 +17,8 @@ export default function App() {
         
         <Route path="/game3" element={<Game3 />} />
         <Route path="/game4" element={<Game4 />} />
+e
+         <Route path="/ResetPage" element={<ResetPage />} />
         <Route path="/victor" element={<VictorResult />} />
       </Routes>
     </BrowserRouter>

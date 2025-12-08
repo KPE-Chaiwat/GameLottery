@@ -5,6 +5,9 @@ import (
 	"errors"
 	"log"
 
+	// "fmt"
+	"time"
+
 	"primusgame-backend/config"
 	"primusgame-backend/models"
 
@@ -84,4 +87,62 @@ func GetRewardData() (*models.RewardDocument, error) {
 
 	log.Println("✅ [GetRewardData] Reward Document Loaded Successfully")
 	return &reward, nil
+}
+
+func UpdatePlayerAndReward(player *models.Player, reward int) error {
+	ctx := context.Background()
+
+	rewardID, _ := primitive.ObjectIDFromHex("693283f45d9650012f58447d")
+	rewardCol := config.DB("primusgame").Collection("Reward")
+	playerCol := config.DB("primusgame").Collection("players")
+
+	// -----------------------------
+	// Winner Entry
+	// -----------------------------
+	entry := models.Game1WinnerEntry{
+		EmployeeID: player.EmployeeID,
+		Name:       player.FnameLname,
+		Reward:     reward,
+		Time:       primitive.NewDateTimeFromTime(time.Now()),
+	}
+
+	// -----------------------------
+	// Determine which winner array
+	// -----------------------------
+	var field string
+	switch reward {
+	case 100:
+		field = "game1.winner100"
+	case 300:
+		field = "game1.winner300"
+	case 500:
+		field = "game1.winner500"
+	default:
+		return errors.New("invalid reward value")
+	}
+
+	// -----------------------------
+	// Push ลง Reward Collection
+	// -----------------------------
+	_, err := rewardCol.UpdateByID(ctx, rewardID,
+		bson.M{"$push": bson.M{field: entry}},
+	)
+	if err != nil {
+		return err
+	}
+
+	// -----------------------------
+	// Update Players Collection (Game1)
+	// -----------------------------
+	_, err = playerCol.UpdateByID(
+		ctx,
+		player.ID,
+		bson.M{
+			"$set": bson.M{
+				"Game1.played": true,
+				"Game1.reward": reward,
+			},
+		},
+	)
+	return err
 }
